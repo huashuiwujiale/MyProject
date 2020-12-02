@@ -1,32 +1,84 @@
-package Experiment2.V2;
+package Experiment2.V1;
 import java.util.Random;
-
-abstract class BinaryOperation {
-    //调用了两个抽象方法，生成合法的算式部分，调用者负责输入合法的参数
+public class BinaryOperation {
     static final int UPPER = 100;
     static final int LOWER = 0;
     private int left_operand = 0,right_operand = 0;
     private char operator = '+';
     private int value = 0;
-    protected void generateBinaryOperation(char anOperator){
-
-        int left=0,right=0,result;
-        Random random = new Random();
-        left = random.nextInt(UPPER+1);
-        do {
-            left = random.nextInt(UPPER+1);
-            right = random.nextInt(UPPER+1);
-            result=calculate(left,right);
-        }while (!checkingCalculation(result));
-        left_operand =left;
-        right_operand=right;
-        operator=anOperator;
-        value=result;
+    private int add = 0;
+    private int sub = 0;
+    private void construct(int left,int right,char op){
+        //计算结果方法
+        left_operand = left;
+        right_operand = right;
+        operator = op;
+        if(op=='+'){
+            value=left+right;
+        }
+        else
+        {
+            value=left-right;
+        }
     }
-    //子类必须实现的两个方法
-    abstract boolean checkingCalculation(int anInteger);
-    abstract int calculate(int left,int right);
+    public BinaryOperation generateAdditionOperation(){
+        //生成加法算式
+        Random random = new Random();
+        int left,right,result;
+        left=random.nextInt(UPPER+1);
+        do {
+            right=random.nextInt(UPPER+1);
+            result=left+right;
+        }while (result>UPPER);
+        BinaryOperation bop = new BinaryOperation();
+        bop.construct(left,right,'+');
+        return bop;
+    }
+    public BinaryOperation generateSubstractExercise() {
+        //生成减法算式
+        Random random = new Random();
+        int left, right, result;
+        left = random.nextInt(UPPER + 1);
+        do {
+            right = random.nextInt(UPPER + 1);
+            result = left - right;
+        } while (result < LOWER);
+        BinaryOperation bop = new BinaryOperation();
+        bop.construct(left, right, '-');
+        return bop;
+    }
+    public BinaryOperation generateBinaryOperation()
+    {
+        Random random = new Random();
+        int temp=random.nextInt(2);
 
+        if(add==25)
+        {
+            temp=1;
+        }
+        else if(sub==25)
+        {
+            temp=0;
+        }
+//        if(0==temp)
+//        {
+//
+//        }
+//        else{
+//
+//        }
+        if(temp==0)
+        {
+            add++;
+            return generateAdditionOperation();
+
+        }
+        else {
+            sub++;
+            return generateSubstractExercise();
+
+        }
+    }
     public int getLeft_operand() {
         //获取第一个操作数
         return left_operand;
@@ -42,25 +94,23 @@ abstract class BinaryOperation {
     public int getValue() {
         return value;
     }
-
-
-    public boolean equals(BinaryOperation operationList){
+    public boolean equals(BinaryOperation anOperation){
         //判断两个算式的三个元素(left_operand,operator,right_operand)是否完全相同
-        //一个是新生成的算式，一个是题集里已经存在的算式
-        return left_operand == operationList.getLeft_operand()&&
-                right_operand == operationList.getRight_operand()&&
-                operator == operationList.getOperator();
+        //要使用getOperator()
+        return left_operand == anOperation.getLeft_operand()&
+                right_operand == anOperation.getRight_operand()&
+                operator == anOperation.getOperator();
     }
-//    public String toString(){
-//    //例如：返回"32+5"
-//    return left_operand+" "+operator+" "+right_operand;
-//}
-//    public String asString(){
-//        //例如：返回"32+5="
-//        return left_operand+" "+operator+" "+right_operand+"=";
-//    }
-//    public String fullString(){
-//        //例如：返回"32+5=37"
-//        return left_operand+" "+operator+" "+right_operand+"="+value;
-//    }
+    public String toString(){
+        //例如：返回"32+5"
+        return left_operand+" "+operator+" "+right_operand;
+    }
+    public String asString(){
+        //例如：返回"32+5="
+        return left_operand+" "+operator+" "+right_operand+"=";
+    }
+    public String fullString(){
+        //例如：返回"32+5=37"
+        return left_operand+" "+operator+" "+right_operand+"="+value;
+    }
 }
